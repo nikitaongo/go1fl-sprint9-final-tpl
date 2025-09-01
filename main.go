@@ -74,13 +74,7 @@ func maxChunks(data []int) int {
 		threadEnd := (i + 1) * length / actualChunks
 		go func(i, start, end int) {
 			defer wg.Done()
-			maximum := data[start]
-			for _, v := range data[start+1 : end] {
-				if maximum < v {
-					maximum = v
-				}
-			}
-			maximums[i] = maximum
+			maximums[i] = maximum(data[start:end])
 		}(i, threadStart, threadEnd)
 	}
 	wg.Wait()
@@ -90,8 +84,7 @@ func maxChunks(data []int) int {
 func main() {
 	fmt.Printf("Генерируем %d целых чисел\n", SIZE)
 	// ваш код здесь
-	slice, err := generateRandomElements(SIZE)
-	fmt.Println(err)
+	slice, _ := generateRandomElements(SIZE)
 
 	fmt.Println("Ищем максимальное значение в один поток")
 	// ваш код здесь
